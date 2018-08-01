@@ -1,0 +1,10 @@
+<?php
+
+$bmc = igk_require_module("igk/BMC" );
+
+$bmc->initdoc($doc);
+ 
+ 
+
+igk_google_addfont($doc, "Roboto", "100;200;400;700;900");
+$t["class"] = "google-Roboto";

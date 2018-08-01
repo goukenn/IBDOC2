@@ -1,0 +1,52 @@
+<?php
+
+//test drop contraints name
+// $this->Db->connect();
+// $adapt = $this->Db->Ad;
+
+// IGKMySQLDataCtrl::DropConstraints($adapt, "igkdev", "app_spbdoc%");
+
+
+// $this->Db->close();
+
+// igk_exit();
+
+
+if ($this->checkUser(false)){
+	igk_exit();
+}
+
+// igk_die("abs");
+$bmc = igk_require_module("igk/BMC", false);
+$bmc->initdoc($doc);
+
+
+$t->clearChilds();
+$t["class"]="fit";
+$dv = $t->addDiv();
+$dv["class"]="disptable fit";
+
+
+$g = $dv->addDiv()->setClass("disptabc alignm alignc");
+
+
+$frm = $g->addDiv()->setClass("dispib alignl")->setStyle("width:300px;")->addForm();
+$frm["action"] = $this->getAppUri("login");
+
+$shape = $frm->addBMCShape()->setClass('fitw')->setStyle("padding:20px");
+
+$shape->addNotifyHost(IGKEnvConst::NotifyLogin, 1);
+
+
+$shape->addBMCtextfield("clLogin");
+$shape->addBMCtextfield("clPwd", "password");
+
+$shape->addBMCButton("btn.connect", 1)->Content = R::gets("Connect");
+
+igk_html_add_good_uri($shape, $this);
+
+$shape->addInput("badUri", "hidden", $this->getAppUri($fname));
+
+
+$g->addDiv()->addIGKCopyright();
+

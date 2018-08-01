@@ -1,0 +1,218 @@
+<?php
+igk_require_module("igk/XSL");
+
+
+
+
+$n  = igk_createxsltnode();
+$n["xmlns:fo"]="http://www.w3.org/1999/XSL/Format";
+$n["xmlns:stp"]="http://www.stpierre-bru.be";
+$n["xmlns:igk"]= IGKConstants::NAMESPACE;
+
+
+$n->addOutput("html");
+
+
+define("IGK_NO_SESSION_BUTTON", 1);
+
+
+
+$t= $n->addTemplate()->setAttribute("match", "/");
+// $n["disable-output-escaping"] = "yes";
+// $div = igk_createNode("div");
+
+// $div->Content = "The output";
+// $div->addA("?q=4&amp;f=8")->Content = "The link";
+
+// $t->add($div);
+
+// $n->add($div);
+// $div->add($t);
+
+// $html = igk_createNode("html");
+// $html->add("body")->addDiv()->Content = "BASIC";
+
+// $c = $t->add("html")->add("body")->add("div")->Content = "SAMLE";
+
+$bmc = igk_require_module("igk/BMC");
+
+$doc = igk_get_document(__FILE__);
+$bmc->initdoc($doc);
+igk_google_addfont($doc, "Roboto", "100;200;400;900");
+
+$doc->addTempScript(igk_io_baseuri($this->getScriptDir()."/.bforms.js"));
+
+
+
+$doc->setNoDocType(1);
+$dv = $doc->body->addBodyBox()->ClearChilds()->add("div");
+
+$dv->setClass("google-Roboto");
+
+
+
+// $base = igk_xsl_node_text("The Base");
+// $base->addValue("'sample'");
+
+$dv->addDiv()->Content = "Exports: ";
+
+$for = $dv->add(igk_xsl_node_foreach("current()/Export"));
+// $for->addvalue("concat('child : ' , name()) ");
+
+
+
+
+//export information
+
+$b = $for->add(igk_createNode("div"));
+
+$ul = $b->add("ul");
+
+
+
+$for = $ul->add(igk_xsl_node_foreach("current()/@*"));
+
+$li = igk_createNode("li");
+$for->add($li);
+$li->add("span")->setStyle("width:200px; display:inline-block;")->add(igk_xsl_node_value("name(current())"));
+$li->add("span")->add(igk_xsl_node_value("current()"));
+
+
+
+$ul = $b->add("ul");
+$ul->add("li")->Content = "BForms"; 
+
+$for = $ul->add(igk_xsl_node_foreach("current()/Global[1]/Node/Node"));
+
+
+$bform = $for->addIf("position()=1");
+$bform->addVariable("name", "current()/Sub/text()");
+$bform->addVariable("version", "current()/Node/Sub/text()");
+
+//obtain options of the bform
+// $bform->addVariable("options", "")->Content  = <<<EOF
+// <xsl:for-each select="current()/Node/Node/Node/Sub[text()!=''][1]/parent::*/Sub">
+// <xsl:text>,'</xsl:text>
+// <xsl:value-of select="current()/text()"/>
+// <xsl:text>':'</xsl:text>
+// <xsl:value-of select="current()/parent::*/Data/text()"/>
+// <xsl:text>'</xsl:text>
+// </xsl:for-each>
+// EOF;
+// $bform->addValue('$options');
+$bform->addVariable("create", "current()/Node//Sub[text()='dateCreation']/parent::*/Data/text()");
+$bform->addVariable("modif", "current()/Node//Sub[text()='dateModification']/parent::*/Data/text()");
+$bform->addVariable("script", "")->Content = igk_xsl_script_to_xsl(<<<EOF
+ns_igk.bform.initBform({'name':'\$name\$', version:'\$version\$', 'createAt':'\$create\$', 'modifAt': '\$modif\$'})
+
+EOF
+);
+
+ // <<<EOF
+// <xsl:text>alert('data </xsl:text>
+// <xsl:value-of select='\$name' />
+// <xsl:text>');</xsl:text>
+// EOF;
+//bform name
+$li = $bform->add(igk_createNode("li"));
+$li->add("span")->setClass("igk-label")->Content = "Name : ";
+$li->add("span")->add(igk_xsl_node_value("current()/Sub/text()"));
+
+$li->addScript()->add(igk_xsl_node_value('$script'));
+
+//select element node
+//$elem  = $bform->addVariable("elements", "count(current()//Sub[text()='elements'])"); 
+$elem  = $bform->addVariable("elements", "current()//Sub[text()='elements'][1]/parent::*[1]/Node"); 
+
+$li = $bform->add(igk_createNode("li"));
+$li->add("span")->setClass("igk-label")->Content = "Elements : ";
+$li->add("span")->add(igk_xsl_node_value("count(\$elements)"));
+
+$dv = $bform->add(igk_createNode("div"))->setClass("disptable");
+$f = $dv->add($bform->addForEach("\$elements"));
+$r = $f->add(igk_createNode("div"))->setClass("disptabr");
+
+$r->addDiv()->setClass("disptabc")->add(igk_xsl_node_value("current()/Node/Sub/text()"));
+$r->addDiv()->setClass("disptabc")->add(igk_xsl_node_value("current()/Node/Node/Node/Sub[text()='name']/parent::*/Data/text()"));
+$r->addDiv()->setClass("disptabc")->add(igk_xsl_node_value("current()/Node/Node/Node/Sub[text()='init']/parent::*/Data/text()"));
+$r->addDiv()->setClass("disptabc")->add(igk_xsl_node_value("current()/Node/Node/Node/Sub[text()='formula']/parent::*/Data/text()"));
+$r->addDiv()->setClass("disptabc")->add(igk_xsl_node_value("current()/Node/Node/Node/Sub[text()='libel']/parent::*/Data/text()")->setAttribute("disable-output-escaping","yes"));
+$r->addDiv()->setClass("disptabc")->add(igk_xsl_node_value("current()/Node/Node/Node/Sub[text()='unformattedLabel']/parent::*/Data/text()"));
+$r->addDiv()->setClass("disptabc")->add(igk_xsl_node_value("current()/Node/Node/Node/Sub[text()='print']/parent::*/Data/text()"));
+$r->addDiv()->setClass("disptabc")->add(igk_xsl_node_value("current()/Node/Node/Node/Sub[text()='repeatable']/parent::*/Data/text()"));
+// $r->addDiv()->setClass("disptabc")->add(igk_xsl_node_value("current()/Node/Node/Sub[text()='name']/parent::*/Data/text()"));
+
+$fE = $f->addVariable("elementinf", "")->addForEach("current()/Node/Node/Node/Sub[text()!='']");
+
+$fE->addIf("position()>1")->addText(",");
+$fE->addIf("position()=1")->addText("ns_igk.bform.addElement(\"{");
+$fE->addText("'");
+$fE->addValue("current()/text()");
+$fE->addText("':%");
+$fE->addValue("current()/parent::*/Data/text()");
+$fE->addText("%");
+$fE->addIf("last()= position()")->addText("}\");");
+
+$script = igk_createNode('script');
+$script->Content = <<<EOF
+/*
+<xsl:value-of select="\$elementinf" />
+*/
+ns_igk.bform.load();
+EOF;
+
+$f->add($script); //('script')->setContent(igk_xsl_node_value("\$elementinf")));
+
+
+
+
+// $li->add("span")->setClass("")->add(igk_xsl_node_value("current()"));
+
+
+// $li->add("span")->add(igk_xsl_node_value("./@version"));
+// $li->add("span")->Content = "zv : ";
+// $li->add("span")->add(igk_xsl_node_value("./@version"));
+
+// $ul->add($for);
+
+
+//update theme 
+$def = $doc->Theme->def;
+
+$def["body.igk-body"] = "font-size: 9pt";
+
+
+$t->add($doc); //text()->Content = $doc->Render();
+
+
+
+//$t->addtext()->addCData("<html><body>data is the best </body></html>");
+//$t->addtext("information");
+header("Content-Type:text/xsl");
+
+igk_wl(igk_xml_header());
+
+//write header style sheet entity for copyright
+// igk_wl(<<<EOF
+// <!DOCTYPE stylesheet[
+// <!ENTITY copy "&#169;">
+// ]>
+// EOF
+// );
+
+$opt = igk_xml_create_render_option();
+$opt->Indent = 1;
+$opt->AttributeEntityEscape = 1;
+$opt->Context = "xsl";
+$opt->mustclosetag = function($tag){
+	
+	if (preg_match("/[^:]+:/i", $tag))
+		return false;
+	return igk_html_mustclosetag($tag);
+};
+
+
+igk_wl($n->Render($opt));
+
+
+igk_exit();

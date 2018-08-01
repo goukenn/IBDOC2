@@ -1,0 +1,37 @@
+<?php
+$t->ClearChilds();
+
+
+$frm = $t->addForm();
+
+
+$frm["action"] = $this->getAppUri("work");
+$frm["class"] = "alignl dispib";
+$frm["style"] = "width: 400px; border:1px solid black; padding:10px; overflow:hidden;";
+
+$d = $frm->addDiv()->setClass("igk-form-control");
+$d->Content = R::gets("Environement Mode");
+$sl = $d->addSelect("clenv");
+
+
+
+
+
+igk_html_build_select_array($sl, [
+    "production"=>(object)array("text"=>R::gets("Production")),
+    "test"=>(object)array("text"=>R::gets("Development"), "select"=>true)
+]);
+
+
+$frm->addDiv()
+->setClass("igk-form-control")
+->addTextArea()->setId("clData")
+->setClass("fit")->setStyle("height: 10em")
+->setAttribute("resize", "no");
+$frm->addDiv()
+->setClass("igk-form-control")
+->addInput("file", "file", "");
+$bar = $frm->addActionBar();
+$bar->addInput("btn.submit", "submit", "send")->setClass("igk-btn");
+$t->addDiv()->addIGKCopyright();
+?>

@@ -1,0 +1,54 @@
+<?php
+
+$schema = igk_html_node_dataschema();
+$entries = $schema->addNode("Entries");
+
+$table = $schema->addNode("DataDefinition")->setAttributes(array(
+	"TableName"=>"bforms",
+	"Description"=>"bforms storage"
+));
+
+$tab = [
+"clId"=>["clAutoIncrement"=>1, "clType"=>"Int", "clIsPrimary"=>1],
+"clUser_Id"=>["clType"=>"Int", "clLinkType"=>"tbigk_users", "clNotNull"=>1],
+"clName"=>["clType"=>"VARCHAR",  "clTypeLength"=>60, "clIsUnique"=>1, "clNotNull"=>1],
+"clDate"=>["clType"=>"DateTime", "clInsertFunction"=>"Now()", "clNotNull"=>1],
+"clTitle"=>["clType"=>"Text", "clNotNull"=>1],
+"clLongDesc"=>["clType"=>"VARCHAR",  "clTypeLength"=>115, "clNotNull"=>1],
+"clShortDesc"=>["clType"=>"VARCHAR",  "clTypeLength"=>60, "clNotNull"=>1],
+"clTicket"=>["clType"=>"Int",  "clTypeLength"=>60],
+"clBandeau"=>["clType"=>"Int", "clNotNull"=>1, "clLinkType"=>"bbandeaux"]
+];
+
+
+foreach($tab as $k=>$s ){
+$table->add("Column")->setAttributes( array_merge(["clName"=>$k], $s));
+}  
+
+
+
+igk_db_add_definition($schema, "bbandeaux", "Bandeaux Storage", [
+"clId"=>["clAutoIncrement"=>1, "clType"=>"Int", "clIsPrimary"=>1],
+"clName"=>["clType"=>"VARCHAR",  "clTypeLength"=>60, "clNotNull"=>1, "clIsUnique"=>1]
+]);
+
+
+
+function igk_db_add_definition($schema, $table, $desc, $def, $entries=null){
+	$table = $schema->addNode("DataDefinition")->setAttributes([
+		"TableName"=>$table,
+		"Description"=>$desc
+	]);
+	
+	foreach($def as $k=>$s ){
+		$table->add("Column")->setAttributes( array_merge(["clName"=>$k], $s));
+	}  
+}
+
+
+$s = $schema->Render();
+
+
+igk_io_w2file($this->getDataDir()."/data.schema.xml", $s);
+igk_xml($s);
+igk_exit();

@@ -1,0 +1,340 @@
+<?php
+$t->ClearChilds();
+
+
+
+
+
+
+if (igk_view_handle_actions($fname, array(
+    "txt"=>function($name){
+        if (igk_is_ajx_demand()){
+            $iframe = igk_createNode("iframe");
+            $iframe["src"] = $this->getAppUri("work/txt/".$name);
+            $iframe["class"]="no-border fit";
+            $iframe->RenderAJX();
+            igk_exit();
+        }
+        igk_wln("render txt");
+        $cmd = "";
+        if (igk_server_is_window())
+            $cmd = BDOC_FOP_DIR."/fop.bat";
+        else        
+            $cmd = BDOC_FOP_DIR."/fop";
+
+        igk_io_createDir($this->getDeclaredDir()."/tmp");
+
+        $xsl = igk_io_dir(dirname(__FILE__)."/out/{$name}/{$name}-TXT.xsl");
+        $xml = igk_io_dir(dirname(__FILE__)."/out/{$name}/{$name}.xml");
+        $pdf = igk_io_dir(dirname(__FILE__)."/out/{$name}/{$name}-TXT.pdf");
+
+        if (file_exists($pdf))
+            @unlink($pdf);
+        $s = " ";
+        $s .= "-xsl ".$xsl. " ";
+        $s .= "-xml ".$xml. " ";
+        $s .= "-pdf ".$pdf. " ";
+        $cmd = $cmd.$s;
+        $out = shell_exec($cmd);
+
+        if (file_exists($pdf)){
+            ob_clean();
+            header("Content-Type: application/pdf");
+            igk_wl(igk_io_read_allfile($pdf));
+            igk_exit();
+        }else{
+            igk_wln("something bad append ".$cmd);
+            igk_wln($out);
+        }
+        return 1;
+    },
+    "pdf"=>function($name){
+        if (igk_is_ajx_demand()){
+            $iframe = igk_createNode("iframe");
+            $iframe["src"] = $this->getAppUri("work/pdf/".$name);
+            $iframe["class"]="no-border fit";
+            $iframe->RenderAJX();
+            igk_exit();
+        }
+        igk_wln("render pdf");
+        $cmd = "";
+        if (igk_server_is_window())
+            $cmd = BDOC_FOP_DIR."/fop.bat";
+        else        
+            $cmd = BDOC_FOP_DIR."/fop";
+
+        igk_io_createDir($this->getDeclaredDir()."/tmp");
+
+        $xsl = igk_io_dir(dirname(__FILE__)."/out/{$name}/{$name}-PDF.xsl");
+        $xml = igk_io_dir(dirname(__FILE__)."/out/{$name}/{$name}.xml");
+        $pdf = igk_io_dir(dirname(__FILE__)."/out/{$name}/{$name}-PDF.pdf");
+
+        if (file_exists($pdf))
+            @unlink($pdf);
+        $s = " ";
+        $s .= "-xsl ".$xsl. " ";
+        $s .= "-xml ".$xml. " ";
+        $s .= "-pdf ".$pdf. " ";
+        $cmd = $cmd.$s;
+        $out = shell_exec($cmd);
+
+        if (file_exists($pdf)){
+            ob_clean();
+            header("Content-Type: application/pdf");
+            igk_wl(igk_io_read_allfile($pdf));
+            igk_exit();
+        }else{
+            igk_wln("something bad append ".$cmd);
+            igk_wln($out);
+        }
+        return 1;
+    }
+), $params, 1))
+return;
+
+
+
+
+//intro phrase
+$m = "{0} {1}, né{2} le {3}, a été hospitalisé{2} en Ophtalmologie du {4} au {5}";
+
+
+$data = igk_io_get_uploaded_data();
+$fxml  = ($f = igk_getv($_FILES, "file"))? igk_getv($f, "tmp_name") : 0;
+
+$xml = "";
+if (($fxml !== 0) && file_exists($fxml)){
+    $xml = igk_io_read_allfile($fxml);
+}
+else {
+    $xml =  igk_getr("clData");
+    if(empty($xml)){
+        $xml = null;
+    }
+}
+
+// igk_wln($_FILES);
+// igk_wln("data : = ".htmlspecialchars($xml));
+
+$linc  = dirname(__FILE__)."/last.inc";
+$xml = $xml ?? 
+// igk_io_read_allfile(dirname(__FILE__)."/genToDispose/RapHospitOphtalmo.xml");
+(file_exists($linc) ? igk_io_read_allfile( igk_io_read_allfile($linc)) : null);
+
+// igk_wln($fxml);
+
+
+
+$o = null;
+
+if ($xml)
+
+    $t->addObData(
+        function()use($xml, & $o)
+        {
+
+    $special_rgx = dboc_specialTypeRegex();
+    igk_xml_read_content($xml, function($n)use (& $o, $special_rgx){
+       
+        switch($n->nodetype){
+            case IGKXmlNodeType::ELEMENT:
+            if (!empty($n->name)){
+                if ($o==null){
+                    $o = igk_createObj();
+                    $o->formName = $n->name;
+                    $o->identifiers = [];
+                    $o->sub = [];
+                    $o->listmark = 0;
+                }
+                else {
+                    //ignore special bform usage for xsl
+                    if (!preg_match("/^(list|titleForm|css|js|specialitecomposant|signaturecomposant|diagnostics|lbIntro|chkIsCourrier)/i", $n->name)){
+                       // igk_wln($n->name);
+
+                        if (igk_getv($n->attribs, "toPrint") != "1"){
+
+                            //ignore special node
+                            if (!preg_match($special_rgx, $n->name)){
+
+                            
+
+
+                            //ignore data
+                            if (!isset($o->ignore))
+                                $o->ignore = array();
+
+                            if (isset($o->ignore[$n->name] ))
+                            {    if (!is_array($o->ignore[$n->name]) )
+                                $o->ignore[$n->name] = array($o->ignore[$n->name]);
+
+                                $o->ignore[$n->name] =  (object)$n->attribs;
+                            }else
+                                $o->ignore[$n->name] = (object)$n->attribs;
+                            break;
+                            }
+                        }
+                        
+                        if ($o->listmark){
+                            if (!isset($o->identifiers[$n->name]))
+                                    $o->identifiers[$n->name] = array();
+                            $o->identifiers[$n->name][] = $n->hasAttrib ? $n->attribs :  $n->name;
+                        }else{
+                            if (isset($o->identifiers[$n->name]) ){
+                                if (!is_array($o->identifiers[$n->name])){
+                                    $o->identifiers =  array($o->identifiers[$n->name]);
+                                }
+                                $o->identifiers[$n->name][] = $n->hasAttrib ? (object)$n->attribs :  $n->name;
+                            }else 
+                            $o->identifiers[$n->name] = $n->hasAttrib ? (object)$n->attribs :  $n->name;
+                        }
+                    }else{                   
+                        switch ($n->name){
+                            case "list":                 
+                                $o->listmark = 1;
+                            break;
+                            case "specialitecomposant":
+                                //Signature data
+                                $n = igk_xml_read_node($n);
+                                if ($n && ($v_sc = $n->innerHtml)){
+                                    $o->specialitecomposant = trim($v_sc);
+                                }
+                                break;
+                            case "signaturecomposant":
+                                $n = igk_xml_read_node($n);
+                                if ($n && ($v_sc = $n->innerHtml)){
+                                    $o->specialitecomposant = bdoc_get_sign(trim($v_sc));
+                                }
+                                break;                            
+                            default:
+                            igk_xml_read_skip($n);                       
+                            break;
+                        }
+                        
+                    }
+                }
+            }
+            // igk_wln($n->name);
+            break;
+            case IGKXmlNodeType::ENDELEMENT:
+                switch ($n->name){
+                    case "list":
+                        $o->listmark =0;
+                        break;
+                }
+            break;
+        }
+        // igk_wln($n);
+        // return false;
+        return 1;
+    });
+
+$debug = igk_getr("debug", 0);
+$env = igk_getr("clenv", "test");
+
+if ($o && !empty($o->formName)){
+
+    igk_debug($debug);
+
+
+    $o->countidentifer = igk_count($o->identifiers);
+    $c = bdoc_container();
+    // igk_wln($o);
+    $bForm = bdoc_createXSL();
+
+    $settings =  (object)[
+        "callback"=>function($settings)use($o){
+            $b =  bdoc_gen($o, $settings);
+            
+            return $b;
+        },
+        "name"=>$o->formName,
+        "host"=>$o
+    ];
+
+
+    bdoc_init_xsl($bForm, "note", $settings);
+
+    $c->add($bForm);
+
+$xfname = dirname(__FILE__)."/out/".$o->formName."/".$o->formName.".xml";
+    igk_io_w2file($xfname, $xml);
+
+
+    $opt = igk_createObj();
+    $opt->Indent = true;
+    $opt->bdoccontext = "pdf";
+    $opt->env = $env ?? "test";
+
+
+    
+
+    $fname = dirname(__FILE__)."/out/".$o->formName."/".$o->formName."-PDF.xsl";
+    igk_io_w2file($fname, $c->Render($opt));
+
+    // $c->RenderXML();
+    // igk_exit();
+    //text - gen
+    $c = bdoc_container();
+    // igk_wln($o);
+    $bForm = bdoc_createXSL();
+
+    bdoc_init_xsl($bForm, "text", $settings);
+
+    $c->add($bForm);
+
+    $opt->bdoccontext = "text";
+    $tfname = dirname(__FILE__)."/out/".$o->formName."/".$o->formName."-TXT.xsl";
+    igk_io_w2file($tfname, $c->Render($opt));
+
+
+    //end debug
+    igk_debug(0);
+
+
+    $u = "";
+
+    $u = igk_io_baseUri($fname);
+
+    $t = igk_get_document("pdfpreview");
+
+$bbox = $t->body->addBodyBox()->clearChilds();
+
+$pan = $bbox->addAJXTabControl($this, "BS");
+$pan->addTabPage("PDF",$this->getAppUri("work/pdf/".$o->formName));
+$pan->addTabPage("TXT", $this->getAppUri("work/txt/".$o->formName));
+
+
+
+
+// $bbox->add("iframe")
+// ->setClass("fit no-border dispib")
+// ->setStyle("padding:0px; margin:0px")
+// ->setAttribute("src" , $this->getAppUri("work/pdf/".$o->formName));
+
+    $t->RenderAJX();
+
+    igk_free_document("pdfpreview");
+
+    // header("Content-Type: application/xml");
+    // igk_wl(igk_xml_header());
+    // $xml = substr($xml, strpos($xml, "? >")+2);//?
+    // igk_wl("<?xml-stylesheet type='text/css' href='{$u}' ? >");//?
+    // igk_wl($xml);
+
+    igk_io_w2file(dirname(__FILE__)."/last.inc", igk_io_dir($xfname));
+    igk_exit();
+
+}
+// var_dump($o);
+}); //end ob data
+
+
+//------------------------------------------------
+//specification
+//------------------------------------------------
+// $t->add($o);
+
+$t->addA($this->getAppUri())->Content = "Home";
+
+
+?>

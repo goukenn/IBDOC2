@@ -1,0 +1,16 @@
+<?php
+igk_require_module("igk/XSL");
+$t->clearChilds();
+
+
+
+$d = igk_createNode("xslstylesheet",null, [$this->getAppUri("xsl.convert")]);
+
+
+header("Content-Type: application/xml");
+
+igk_wl(igk_xml_header()."\n");
+igk_wl($d->render());
+igk_wl( preg_replace("/<\?xml(.)+\?>/i", "", igk_io_read_allfile($dir."/temp/RapHospitOphtalmo-11.xml")));
+
+igk_exit();

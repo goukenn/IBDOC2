@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><RapHospitOphtalmo descr="Rapport d&apos;hospit" layout="" site="SP" spec="reporteditor" ver="-1" patLastName="PatNom" patFirstName="PatPrenom" patBirthDate="20180508" pid="" ndosm="222222222222" inami="33333333333" doctorInami11="" doctorLastName="Encode-DrNom" doctorFirstName="Encode-DrPrenom" doctorEmail="encodeur@email.com" doctorQal="Dr" noteDate="20180508" noteHeure="133900" noteId="" sejDateIn="20180501" sejDateOut="20180508" sej="9999999" userFirstName="ViewerPrenom" userLastName="ViewerNom" sejPlace="AA" libelle1="" relDoctorInami="22222222222" relDoctorLastName="MT-DrNom" relDoctorFirstName="MT-DrPrenom" relDoctorEmail="medecin.traitant@email.com" relDoctorPhone="02/3456789" relDoctorGsm="0477/11.22.33" relDoctorAdresse="GRAND PLACE 1" relDoctorCp="1000" relDoctorCity="BRUXELLES" patSex="m" patientAdresse="RUE DE LA LOI 16" patientCp="1000" patientLoc="BRUXELLES" patientPays="B" impressionTs="20180508133923" patientNiss="11111111111 " patientNumMut="" patientNomMut="" copie="" outputType="PDF" serverType="DEVELOPPEMENT NOTE" examDate="20180508" examHeure="175900" isDraft="0" signUser="" otherSignUser="" hostName="10.10.20.27"><titleForm newline="1" title="1" style="lbl" label="&lt;div class=&quot;titleForm&quot;&gt;Hospit Ophtalmo&lt;/div&gt;" unformattedLabel="Hospit Ophtalmo" isModified="0" toPrint="1" indentation="0" xmlStyle="" nextField=""></titleForm><css newline="1" title="1" style="lbl" label="&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;http://SP1051:8080/include/template2016/formulaire-css.css&quot; /&gt; " unformattedLabel="" isModified="0" toPrint="1" indentation="0" xmlStyle="" nextField=""></css>
+
+<lblgsMotifAdmission newline="1" title="1" style="lbl" label="&lt;span class=&quot;titre1&quot;&gt;Motif d&apos;adminission&lt;/span&gt;" unformattedLabel="Motif d&apos;adminission" isModified="0" toPrint="1" indentation="0" xmlStyle="" nextField="">
+
+</lblgsMotifAdmission>
+
+<!-- example list sample -->
+<list style="rad" label="" unformattedLabel="" toPrint="1" indentation="0" xmlStyle="" nextField="">
+<radAffichAtcdFam newline="0" style="rad" label="Afficher" unformattedLabel="Afficher" isModified="0" value="1" toPrint="1" nextField="">off</radAffichAtcdFam>
+<radAffichAtcdFam newline="0" style="rad" label="Masquer" unformattedLabel="Masquer" isModified="0" value="2" toPrint="1" nextField="">on</radAffichAtcdFam>
+</list>
+
+
+<txtgerAdminission newline="1" title="0" style="txtArea" label="" unformattedLabel="" isModified="0" toPrint="1" indentation="0" xmlStyle="" nextField=""></txtgerAdminission>
+
+
+
+
+
+
+
+
+<lblgsDispSortieM1 newline="0" title="1" style="lbl" label="Le patient sera revu" unformattedLabel="Le patient sera revu" isModified="0" toPrint="1" indentation="0" xmlStyle="" nextField=""/><list style="chk" label="" unformattedLabel="" toPrint="1" indentation="0" xmlStyle="" nextField=""><chkDispSortieEnConsulation newline="0" style="chk" label="en consultation" unformattedLabel="en consultation" isModified="0" value="1" toPrint="1" nextField="">off</chkDispSortieEnConsulation></list>
+
+<list style="chk" label="" unformattedLabel="" toPrint="1" indentation="0" xmlStyle="" nextField="">
+	<chkDispoSortieRealisation newline="0" style="chk" label="pour la réalisation" unformattedLabel="pour la réalisation" isModified="0" value="1" toPrint="1" nextField="">on</chkDispoSortieRealisation>
+</list>
+
+
+
+<list style="chk" label="" unformattedLabel="" toPrint="1" indentation="0" xmlStyle="" nextField="">
+	<chkChoixOctMac newline="0" style="chk" label="d'un OCT maculaire" unformattedLabel="d'un OCT maculaire" isModified="0" value="1" toPrint="1" nextField="">off</chkChoixOctMac></list>
+<list style="chk" label="" unformattedLabel="" toPrint="1" indentation="0" xmlStyle="" nextField="">
+	<chkChoixOctPap newline="0" style="chk" label="d'un OCT papillaire" unformattedLabel="d'un OCT papillaire" isModified="0" value="1" toPrint="1" nextField="">on</chkChoixOctPap></list>
+<list style="chk" label="" unformattedLabel="" toPrint="1" indentation="0" xmlStyle="" nextField="">
+	<chkChoixChampsVisuel newline="0" style="chk" label="de champs visuels" unformattedLabel="de champs visuels" isModified="0" value="1" toPrint="1" nextField="">on</chkChoixChampsVisuel>
+</list>
+
+
+
+
+<!-- phrase to loop test : lp -->
+<list style="chk" label="" unformattedLabel="" toPrint="1" indentation="0" xmlStyle="" nextField="">
+	<chklpChoixOctMac newline="0" style="chk" label="d'un OCT maculaire" unformattedLabel="d'un OCT maculaire" isModified="0" value="1" toPrint="1" nextField="">off</chklpChoixOctMac>
+	<chklpChoixOctMac newline="0" style="chk" label="d'un OCT papillaire" unformattedLabel="d'un OCT papillaire" isModified="0" value="1" toPrint="1" nextField="">on</chklpChoixOctMac>
+	<chklpChoixOctMac newline="0" style="chk" label="de champs visuels" unformattedLabel="de champs visuels" isModified="0" value="1" toPrint="1" nextField="">on</chklpChoixOctMac>
+</list>
+
+
+
+<list style="chk" label="" unformattedLabel="" toPrint="1" indentation="0" xmlStyle="" nextField="">
+	<chkChoixFluoAngioraphie newline="0" style="chk" label="d'une fluo-angiographie" unformattedLabel="d'une fluo-angiographie" isModified="0" value="1" toPrint="1" nextField="">off</chkChoixFluoAngioraphie>
+</list>
+<list style="chk" label="" unformattedLabel="" toPrint="1" indentation="0" xmlStyle="" nextField="">
+	<chkChoixICG newline="0" style="chk" label="d'un ICG" unformattedLabel="d'un ICG" isModified="0" value="1" toPrint="1" nextField="">off</chkChoixICG>
+</list>
+<txtChoixAutre newline="1" length="20" title="0" style="txt" label="" unformattedLabel="" isModified="0" toPrint="1" indentation="0" xmlStyle="" nextField=""/>
+<list style="chk" label="" unformattedLabel="" toPrint="1" indentation="0" xmlStyle="" nextField="">
+	<chkDispoSortieDoc newline="0" style="chk" label="chez le Docteur" unformattedLabel="chez le Docteur" isModified="0" value="1" toPrint="1" nextField="">on</chkDispoSortieDoc>
+</list>
+<txtDispoSortieDoc newline="1" length="45" title="0" style="txt" label="" unformattedLabel="" isModified="0" toPrint="1" indentation="0" xmlStyle="" nextField="">Wilczek Ewa</txtDispoSortieDoc>
+<list style="chk" label="" unformattedLabel="" toPrint="1" indentation="0" xmlStyle="" nextField="">
+	<chkgsiDispoInNumber newline="0" style="chk" label="dans" unformattedLabel="dans" isModified="0" value="1" toPrint="1" nextField="">on</chkgsiDispoInNumber>
+</list>
+<txtirDispoInNumber newline="0" length="5" title="0" style="txt" label="" unformattedLabel="" isModified="0" toPrint="1" indentation="0" xmlStyle="" nextField=""/>
+<list style="cmb" label="" unformattedLabel="" toPrint="1" indentation="0" xmlStyle="" nextField="">
+<drdgeiDatePeriod newline="0" style="cmb" label="jours" unformattedLabel="jours" isModified="0" value="1" toPrint="1" nextField="">on</drdgeiDatePeriod>
+<drdgeiDatePeriod newline="0" style="cmb" label="semaines" unformattedLabel="semaines" isModified="0" value="2" toPrint="1" nextField="">off</drdgeiDatePeriod>
+<drdgeiDatePeriod newline="0" style="cmb" label="mois" unformattedLabel="mois" isModified="0" value="3" toPrint="1" nextField="">off</drdgeiDatePeriod>
+</list>
+<list style="chk" label="" unformattedLabel="" toPrint="1" indentation="0" xmlStyle="" nextField="">
+	<chkDispoSortieAt newline="0" style="chk" label="le" unformattedLabel="le" isModified="0" value="1" toPrint="1" nextField="">on</chkDispoSortieAt>
+</list>
+<dateDispoSoriteAt newline="1" title="0" style="date" label="" unformattedLabel="" isModified="0" toPrint="1" indentation="0" xmlStyle="" nextField="">09/05/2018</dateDispoSoriteAt>
+<txtgeDispoSortieFree newline="1" title="0" style="txtArea" label="" unformattedLabel="" isModified="0" toPrint="1" indentation="0" xmlStyle="" nextField="">dfgddfg</txtgeDispoSortieFree>
+
+
+
+
+
+<specialitecomposant newline="1" title="0" style="hidden" label="" unformattedLabel="" isModified="0" toPrint="1" indentation="0" xmlStyle="" nextField="">ophtalmo_ophtalmo
+</specialitecomposant>
+
+
+
+<js newline="1" title="1" style="lbl" label="&lt;div class=&quot;spacer&quot;&gt;&lt;script src=&quot;http://SP1051:8080/include/template2016/formulaire-js.js&quot;&gt;&lt;/script&gt;&lt;/div&gt;" unformattedLabel="" isModified="0" toPrint="1" indentation="0" xmlStyle="" nextField=""></js><diagnostics></diagnostics></RapHospitOphtalmo>

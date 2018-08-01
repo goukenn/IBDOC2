@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OrthoProtOpGenerique descr="Protocole op générique ortho" layout="" site="SP" spec="reporteditor" ver="-3" patLastName="PatNom" patFirstName="PatPrenom" patBirthDate="20180511" pid="" ndosm="222222222222" inami="33333333333" doctorInami11="" doctorLastName="Encode-DrNom" doctorFirstName="Encode-DrPrenom" doctorEmail="encodeur@email.com" doctorQal="Dr" noteDate="20180511" noteHeure="102500" noteId="" sejDateIn="20180504" sejDateOut="20180511" sej="9999999" userFirstName="ViewerPrenom" userLastName="ViewerNom" sejPlace="AA" libelle1="" relDoctorInami="22222222222" relDoctorLastName="MT-DrNom" relDoctorFirstName="MT-DrPrenom" relDoctorEmail="medecin.traitant@email.com" relDoctorPhone="02/3456789" relDoctorGsm="0477/11.22.33" relDoctorAdresse="GRAND PLACE 1" relDoctorCp="1000" relDoctorCity="BRUXELLES" patSex="m" patientAdresse="RUE DE LA LOI 16" patientCp="1000" patientLoc="BRUXELLES" patientPays="B" impressionTs="20180511102553" patientNiss="11111111111 " patientNumMut="" patientNomMut="" copie="" outputType="PDF" serverType="DEVELOPPEMENT NOTE" examDate="20180511" examHeure="175900" isDraft="0" signUser="" otherSignUser="" hostName="10.10.20.27">
+	<titleForm newline="1" title="1" style="lbl" label="&lt;div class=&quot;titleForm&quot;&gt;Protocole opératoire générique ortho&lt;/div&gt;" unformattedLabel="Protocole opératoire générique ortho" isModified="0" toPrint="1" indentation="0" xmlStyle="" nextField=""/>
+	<css newline="1" title="1" style="lbl" label="&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;http://SP1051:8080/include/template2016/formulaire-css.css&quot; /&gt; " unformattedLabel="" isModified="0" toPrint="1" indentation="0" xmlStyle="" nextField=""/>
+	
+	<lblParametresINAMI newline="0" title="1" style="lbl" label="&lt;b&gt;Codes INAMI&lt;/b&gt; (&lt;a border=&quot;none&quot; href=&quot;http://www.inami.fgov.be/fr/nomenclature/nomenclature/Pages/nomen-article14k.aspx&quot; target=&quot;_blank&quot;&gt;nomenclature&lt;/a&gt;)" unformattedLabel="Codes INAMI" isModified="0" toPrint="1" indentation="0" xmlStyle="" nextField=""/>
+	<txtParametresINAMI newline="0" length="30" title="0" style="txt" label="" unformattedLabel="" isModified="0" toPrint="1" indentation="0" xmlStyle="" nextField="">dsdf</txtParametresINAMI>
+	<txtParametresINAMI newline="0" length="30" title="0" style="txt" label="" unformattedLabel="" isModified="0" toPrint="1" indentation="0" xmlStyle="" nextField="">sdfsdf</txtParametresINAMI>
+	<txtParametresINAMI newline="0" length="30" title="0" style="txt" label="" unformattedLabel="" isModified="0" toPrint="1" indentation="0" xmlStyle="" nextField="">fsddddds</txtParametresINAMI>
+	<txtParametresINAMI newline="0" length="30" title="0" style="txt" label="" unformattedLabel="" isModified="0" toPrint="1" indentation="0" xmlStyle="" nextField="">sdddd</txtParametresINAMI>
+	<lblConc newline="1" title="1" style="lbl" label="&lt;a border=&quot;none&quot; href=&quot;http://intranet.stpierre-bru.be/sites/default/files/bdoc_mise_en_forme.pdf&quot; target=&quot;_blank&quot;&gt;&lt;img border=&quot;none&quot; style=&quot;margin-bottom:-3px;&quot; src=&quot;http://sp1051:8080/include/template2016/img/icones/markdown.png&quot; /&gt;&lt;/a&gt;" unformattedLabel="" isModified="0" toPrint="1" indentation="0" xmlStyle="" nextField=""/>
+	<txtConc newline="1" title="0" style="txtArea" label="" unformattedLabel="" isModified="0" toPrint="1" indentation="0" xmlStyle="" nextField=""/>
+	
+	
+	<list style="chk" label="" unformattedLabel="" toPrint="1" indentation="0" xmlStyle="" nextField="">
+		<chkIsCourrier newline="1" style="chk" label="Ceci est un courrier" unformattedLabel="Ceci est un courrier" isModified="0" value="1" toPrint="1" nextField="">off</chkIsCourrier>
+	</list>
+	<specialitecomposant newline="1" title="0" style="hidden" label="" unformattedLabel="" isModified="0" toPrint="1" indentation="0" xmlStyle="" nextField="">ortho_ortho</specialitecomposant>
+	<js newline="1" title="1" style="lbl" label="&lt;div class=&quot;spacer&quot;&gt;&lt;script src=&quot;http://SP1051:8080/include/template2016/formulaire-js.js&quot;&gt;&lt;/script&gt;&lt;/div&gt;" unformattedLabel="" isModified="0" toPrint="1" indentation="0" xmlStyle="" nextField=""/>
+	<diagnostics/>
+</OrthoProtOpGenerique>

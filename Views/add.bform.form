@@ -1,0 +1,20 @@
+<?php
+
+$dv = $t;
+$frm  = $dv->addForm();
+$frm["action"] = $ctrl->getAppUri($fname."/storebform");
+
+$frm->addBMCTextfield("clName");
+$frm->addBMCTextfield("clTitle");
+$frm->addBMCTextfield("clLongDesc");
+$frm->addBMCTextfield("clShortDesc");
+$frm->addBMCTextfield("clTicket");
+
+
+$tab = $ctrl->Db->getBandeaux();
+
+$frm->addBMCCombobox("clBandeau", $tab);
+
+
+$dv = $frm->addDiv();
+$dv->addBMCButton("s",1)->Content = "Add";

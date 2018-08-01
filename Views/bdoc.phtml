@@ -1,0 +1,38 @@
+<?php
+
+
+//build and generate a bForm structure
+//that will produice a xml - data that cant be attached to a xml so.
+
+
+
+
+
+igk_view_handle_actions($fname, array(
+"xslpdf"=>function(){
+	$n = bdoc_createXSL();
+	$n->RenderXML();
+	igk_exit();
+},
+"xsltext"=>function(){
+	$n = bdoc_createXSL();
+	$n->RenderXML();
+	igk_exit();
+}
+), $params);
+
+$BDOC_URI = "http://SP1051:8080/include/template2016-copytravail/";
+
+$bForm = bdoc_createForm("RevaErgoBilanPsychoGeria");
+
+$bForm->addCssLink("css", $BDOC_URI."formulaire-css.css");
+$bForm->addJSLink("js", $BDOC_URI."formulaire-js.js");
+
+$bForm->addBandeau("ortho_ortho");
+$bForm->addDiagnostics();
+
+header("Content-Type: application/xml");
+igk_wl(igk_xml_header());
+$bForm->RenderAJX();
+igk_exit();
+?>

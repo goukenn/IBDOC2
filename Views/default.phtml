@@ -1,0 +1,207 @@
+<?php
+
+
+
+
+$this->checkUser(true, $this->getAppUri("connect"));
+include($dir."/.header.pinc");
+$t->clearChilds();
+
+
+class BFormDefaultActionList{
+	private $ctrl;
+	private $target;
+	private static $sm_singleton;
+	
+	public static function getInstance(){
+		return self::$sm_singleton;
+	}
+	public static function InitSingleton($ctrl, $t){
+		return self::$sm_singleton ?? (self::$sm_singleton = new BFormDefaultActionList($ctrl, $t));
+		
+	}
+	private function __construct($ctrl, $t){
+		$this->ctrl = $ctrl;
+		$this->target = $t;
+	}
+	public function search(){
+		igk_die("not implement");
+	}
+	public function storebform(){
+		$msg ="";
+		$type ="";
+		$error = null;
+		
+		if ($this->ctrl->db->addFormsRequest($error)){
+			$msg = "Form added";
+			igk_resetr();
+		}else{
+			$msg = "Form not added ". ($error ? implode("<br />", $error) : null);
+			$type ="danger";
+		}
+		if (igk_is_ajx_demand()){
+			igk_ajx_toast($msg, $type);			
+			igk_ajx_replace_uri($this->ctrl->getAppUri(""));
+		}else{
+			$cl = $type ? "igk-".$type : null;
+			$this->target->addToast()->setClass($cl)->Content = $msg;
+			$this->target->addJSReplaceUri($this->ctrl->getAppUri (""));
+			
+		}
+	}
+	public function drop($id){
+		$this->ctrl->Db->dropForm($this->ctrl->Db->getUserId(), $id);
+		if (igk_is_ajx_demand()){			
+			igk_ajx_replace_uri($this->ctrl->getAppUri(""));
+		}
+	}
+	public function add(){
+		
+		if (igk_qr_confirm()){					
+			$this->storebform();
+			igk_exit();
+		}
+		
+		if (!igk_is_ajx_demand()){
+			igk_navto($this->ctrl->getAppUri(""));
+		}
+		
+		$d = igk_createNode("div");
+		$tab=  igk_get_env(IGKEnvKeys::CTRL_CONTEXT_VIEW_ARGS);
+		
+		$fname = igk_getv($tab, "fname");
+		
+
+		igk_include($this->ctrl->getViewDir()."/add.bform.form", null, $d);
+		
+	
+		if (igk_is_ajx_demand()){
+			igk_ajx_notify_dialog(R::gets("Add new BForm"), $d);	
+		}else{
+			$this->target->add($d);
+		}
+	}
+	public function view($type='list'){
+	}
+
+	public function pickfile(){
+		$data = igk_io_get_uploaded_data();
+		// igk_ilog("done");
+		igk_ajx_toast(R::gets("Loading complete"));
+		igk_exit();
+	}
+}
+
+
+
+
+igk_view_handle_actions($fname, BFormDefaultActionList::InitSingleton($this, $t), $params);
+
+$t = $t->addDiv()->setStyle("margin-left:300px");
+
+
+
+$d = $t->addDiv()->setClass("header-bar");
+
+$d->addA($this->getAppUri("logout"))->Content = R::gets("Logout");
+$d->addA("#")->setClass("floatr")->Content = igk_user_fullname($this->User);
+
+
+$d = $t->addActionBar();
+
+
+
+$ctn = $t->addDiv()->setClass("content")->addContainer()->setClass("fit-a-w")->addRow();
+
+
+
+$menu = [
+"Forms"=>["action"=>$this->getAppUri("bforms")],
+"QA"=>["action"=>$this->getAppUri("bQA")],
+"Get XSL PDF"=>["action"=>$this->getAppUri("xslpdf")], 
+"Get XSL Txt"=>["action"=>$this->getAppUri("xsltxt")], 
+"Tools"=>["action"=>$this->getAppUri("tools")]
+];
+
+
+$d->addObData(function() use ($menu)
+{
+	foreach($menu as $k=>$v){
+		$li = igk_createNode("abtn", null, [$v["action"]] );
+		$li->Content = $k;
+		$li->RenderAJX();
+	}
+},"NoTagNode");
+
+
+
+
+
+$dv = $ctn->addCol("fitw")->addDiv();
+
+$bar = $dv->addActionBar()->setClass("bform-actions");
+$bar->addAJXA($this->getAppUri($fname."/add"))->setClass ("igk-btn")->Content = igk_svg_use("add");
+// $bar->addAJXA($this->getAppUri($fname."/view/grid"))->setClass ("igk-btn")->Content = igk_svg_use("grid");
+// $bar->addAJXA($this->getAppUri($fname."/view/list"))->setClass ("igk-btn")->Content = igk_svg_use("list");
+
+$bar->addBMCTextSearchField("clSearch","", $this->getAppUri($fname."/search"))->setClass("igk-pull-right");
+
+
+// $dv->addObData(function(){
+// igk_wln(igk_db_create_row_obj("bforms", $this));
+// });
+$forms = $this->Db->getForms();
+
+if (!$forms || $forms->RowCount==0){
+	$dv->addPanel()->Content = R::gets("There is no form");
+}
+else{
+	//view forms;
+	igk_bdoc_view_bform_table($this, $dv, $forms, $fname);
+}
+
+//$dv = $t->addContainer()->setClass("fit-a-w")->addRow()->addCol("fit")->addPanelBox();
+
+
+
+$def = $doc->Theme->def;
+
+$def[".menu-bar"] = "{sys:posfix , fith, loc_t, loc_l} width: 280px; background-color: #444; color:#eee; ";
+$def[".igk-container.fit-a-w"]= "width:auto !important;";
+$def[".igk-table td"]= "{sys:no-wrap}";
+
+$def[".menu-bar ul "] = "margin-top:92px";
+$def[".menu-bar ul > li"] = "{sys:dispb}";
+$def[".menu-bar ul > li > a"] = "{sys:dispb} padding:10px 16px; color: #77F";
+$def[".menu-bar ul > li > a:hover"] = "background-color:rgba(255, 255, 255, 0.2) ; color: white;";
+
+
+$cd = $t->addDiv()->addRow()->addDiv();
+$cd->addAJXPickFile($this->getAppUri($fname."/pickfile"),"{accept:'application/xml'}");
+$cd->addDiv()->setId("igk-pickfile-progress");
+$t->addIGKCopyright();
+
+
+
+
+$dv = $t->addDiv();
+$dv["class"] = "menu-bar";
+
+
+$ul = $dv->add("ul");
+$menu  = [
+"Dashboard"=>["uri"=>$this->getAppUri("dashboard")], 
+"Wiki"=>["uri"=>$this->getAppUri("wiki")],
+"Tools"=>["uri"=>$this->getAppUri("tools")],
+"DB Schemas"=>["uri"=>$this->getAppUri("schema")],
+"Demo - bfrom xml - html presentation"=>["uri"=>$this->getAppUri("demo-grid")],
+];
+
+
+foreach($menu as $k=>$v){
+$ul->add("li")->addA(igk_getv($v, "uri", "#"))->Content =  $k;
+}
+
+
+
+

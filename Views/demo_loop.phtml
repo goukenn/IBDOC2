@@ -1,0 +1,89 @@
+<?php
+
+//demo loop
+$t->clearChilds();
+igk_require_module("igk/XSL");
+
+igk_view_handle_actions($fname, ["xsl"=>function(){
+
+	
+	
+	$n  = igk_createxsltnode();
+	$n["xmlns:fo"]="http://www.w3.org/1999/XSL/Format";
+	$n["xmlns:stp"]="http://www.stpierre-bru.be";
+	$n["xmlns:igk"]= IGKConstants::NAMESPACE;
+
+
+	$n->addOutput("html");
+	
+	
+	$template = $n->addTemplate()->setAttribute("match", "/");
+	
+	$template->addVariable("text", "current()/books/text()");
+	
+	$template->addValue("string-length(\$text)");
+	
+	$template->addObData(function(){
+		
+?>
+
+<xsl:variable name="offset" select='1' />
+
+<xsl:variable name="sbefore" select="substring-before($text, 'BOOK')" />
+
+
+<xsl:value-of select="concat('before: ', $sbefore)" />
+
+
+<xsl:variable name="data" >
+
+<xsl:variable name="toffset">
+8
+</xsl:variable>
+
+
+
+
+<xsl:call-template name="merge">
+	<xsl:with-param name="wdata" select="substring($text, $toffset, 20)" />
+
+</xsl:call-template>
+
+</xsl:variable>
+
+
+<xsl:value-of select="concat('data:' , $data)" />
+
+<?php
+		
+		
+	});
+	
+	$n->addTemplate()->setAttribute("name", "merge")->Content = <<<EOF
+<xsl:param name='wdata' select="''"/>
+<xsl:value-of select="\$wdata" />
+EOF;
+	header("Content-Type:text/xsl");
+	igk_wl($n->Render());
+	igk_exit();
+
+	
+}], $params);
+
+
+
+
+header("Content-Type: application/xml");
+$d = igk_createNode("xslstylesheet",null, [$this->getAppUri($fname."/xsl")]);
+
+igk_wl(igk_xml_header()."\n");
+igk_wl($d->render());
+
+$book = igk_createXmlNode("books");
+
+
+$book->Content = str_repeat("THE BOOK3 OF THE GOOD OF WAR INFORMATION\n", 20);
+
+
+$book->renderXML();
+igk_exit();

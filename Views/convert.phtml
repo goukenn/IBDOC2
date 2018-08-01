@@ -1,0 +1,64 @@
+<?php
+
+//convert xml presentation to xsl for PDF and xsl for Text
+
+$t->clearChilds();
+
+igk_view_handle_actions($fname, array(
+    "pdf"=>function(){
+        $bForm = bdoc_createXSL();
+
+        bdoc_init_xsl($bForm, "note");
+
+
+
+
+        //test xml generator
+        //$bForm->addFoInline()->Content = "Data";
+
+        igk_wl(igk_xml_header());
+        $opt = igk_createObj();
+        $opt->Indent = true;
+        $opt->bdoccontext = "pdf";
+
+        
+        header("Content-Type: application/xml");
+        $bForm->RenderAJX($opt);
+        igk_exit();
+    },
+    "text"=>function(){
+        $bForm = bdoc_createXSL();
+        header("Content-Type: application/xml");
+        igk_wl(igk_xml_header());
+
+        bdoc_init_xsl($bForm, "text");
+
+        $opt->Indent = true;
+        $opt->bdoccontext = "text";
+
+        $bForm->RenderAJX($opt);
+        igk_exit();
+    }
+), $params);
+$dv = $t->addDiv();
+$dv->setStyle("padding-left:10px; padding-right:10px;");
+$dv->addDiv()->setStyle("font-size:2.2em")->Content = "ConvertBdoc2XSL";
+$dv->addDiv()->setStyle("font-size:1.2em")->Content = R::gets("Convert XML BDoc document to Xsl v.1.0");
+
+$frm = $t->addForm();
+$frm["action"] = $this->getAppUri($fname."/pdf");
+$dv = $frm->addDiv();
+$dv->setStyle("padding:10px");
+$dv->addTextarea()->setAttribute("row", 15)->setId("cltext");
+$frm->addInput("type", "hidden", "xml");
+
+
+$dv = $frm->addDiv();//type de rappot
+
+$frm->addInput("bdoc", "hidden", "RapHospit");
+
+
+
+$bar = $frm->addActionBar();
+$bar->addInput("btn.convert", "submit", R::gets("Convert"));
+?>

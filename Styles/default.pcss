@@ -1,0 +1,49 @@
+<?php
+//
+// Balafon theme files for
+// Private custom theme
+// in context variable
+//
+
+// $ctrl : controller that init the style
+// $file : current file
+// $xsm_screen =  igk_app()->Doc->Theme->get_media(IGKHtmlDocThemeMediaType::XSM_MEDIA);
+// $sm_screen = igk_app()->Doc->Theme->get_media( IGKHtmlDocThemeMediaType::SM_MEDIA);
+// $lgm_screen = igk_app()->Doc->Theme->get_media( IGKHtmlDocThemeMediaType::LG_MEDIA);
+// $xlgm_screen = igk_app()->Doc->Theme->get_media( IGKHtmlDocThemeMediaType::XLG_MEDIA);
+// $xxlgm_screen = igk_app()->Doc->Theme->get_media( IGKHtmlDocThemeMediaType::XXLG_MEDIA);
+// $PTR = igk_app()->Doc->Theme->getPrintMedia();
+// $def : global definition
+//-----------------------------------------------------------------------------------------------------------------
+//variables
+//-----------------------------------------------------------------------------------------------------------------
+//$css_m : main css class of this controller
+//$def : init global definition
+
+//add your custom theme to definitions
+
+
+
+//-----------------------------------------------------------------------------------------------------------------
+//register your font package
+//-----------------------------------------------------------------------------------------------------------------
+//type of  WOFF, TrueTypeFont are supported
+//igk_css_reg_font_package("packagename" , "[basedir_path_to_fontfile]", "[type]");
+//-----------------------------------------------------------------------------------------------------------------
+//register used color
+//-----------------------------------------------------------------------------------------------------------------
+//type of  WOFF, TrueTypeFont are supported
+//igk_css_regcolor(colorname , colorvalue);
+//exemple: igk_css_regcolor('mydata-color', '#fff');
+
+
+$def[$css_m.".connect .igk-winui-bmc-shape__corner_tr"] = "background-color:#fff";
+$def[$css_m.".connect .igk-winui-bmc-shape__corner_bl"] = "background-color:transparent";
+
+$def[".igk-js-notify-box.igk-show .igk-js-notify .content-z"] = "{sys:dispb} margin:auto; width: 320px; background-color:#fefefe";
+
+$def[".bform-actions"] = "";
+$def[".bform-actions a.igk-btn"] = "width: 36px; padding:0px; text-align:center;";
+$def[".bform-actions a.igk-btn svg"] = "{sys:fit}";
+$def["table svg"] = "{sys:fit} width:24px; height:24px;";
+?>
